@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\MultiplexController;
+use App\Http\Controllers\PeliculaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +17,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    return csrf_token(); 
     return view('welcome');
 });
+
+Route::resource('multiplex', MultiplexController::class);
+Route::resource('pelicula', PeliculaController::class);
+Route::resource('cliente', ClienteController::class);
+
+
+   
+
+
