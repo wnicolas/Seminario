@@ -39,16 +39,26 @@ class CompraController extends Controller
     {
         try {
             DB::transaction(function () use ($request) {
-                $cliente = Compra::create(
+
+                $asientosComprados = json_decode($request->asientos_comprados);
+
+                $compra = Compra::create(
                     [
                         "K_COMPRA" => $request->K_COMPRA,
                         "K_CLIENTE" => $request->K_CLIENTE,
                         "F_COMPRA" => $request->F_COMPRA,
-                        "V_COMPRA" => $request->V_COMPRA,
+                        //TODO: IMPLEMENTAR VALOR DE LA COMPRA
+                        "V_COMPRA" => 0,
                         "ESTADO" => $request->ESTADO,
 
                     ]
                 );
+
+                foreach ($asientosComprados as $value) {
+                    DB::update("UPDATE cine_distrito.proyeccion_asiento SET ESTADO='O' WHERE cine_distrito.K_MULTIPLEX=?,cine_distrito.K_ASIENTO=?,cine_distrito.K_SALA=?, cine_distrito.K_PROYECCION=?", [$value->K_MULTIPLEX, $value->K_ASIENTO, $value->K_SALA, $value->K_PROYECCION]);
+                    
+                    DB::insert('INSERT INTO cine_distrito.compra_asiento VALUES(?,?,?,?,?)', [$value->K_MULTIPLEX, $value->K_ASIENTO, $value->K_SALA, $value->K_PROYECCION, $value->K_COMPRA]);
+                }
             }, 5);
         } catch (\Throwable $th) {
             return $th->getMessage();
