@@ -35,14 +35,37 @@
           </div>
           <div class="modal-body">
             <div class="container">
-              <div class="pantalla">Pantalla</div>
+              <div class="row">
+                <div class="col d-flex justify-content-center">
+                  <button class="btn btn-outline-success">Silla</button>
+                  Disponible
+                </div>
+                <div class="col d-flex justify-content-center">
+                  <button class="btn btn-primary">Silla</button> Reservado
+                </div>
+                <div class="col d-flex justify-content-center">
+                  <button class="btn btn-danger">Silla</button> Ocupado
+                </div>
+              </div>
+
+              <div class="pantalla my-3">Pantalla</div>
               <div class="row justify-content-center">
                 <div
                   class="col col-4 d-flex justify-content-center"
                   v-for="silla in sillas"
                   :key="silla.K_ASIENTO"
                 >
-                  <button class="btn">Silla</button>
+                  <button
+                    :class="[
+                      silla.ESTADO == 'D'
+                        ? 'btn my-2 btn-outline-success'
+                        : silla.ESTADO == 'R'
+                        ? 'btn my-2 btn-primary'
+                        : 'btn my-2 btn-danger',
+                    ]"
+                  >
+                    Silla
+                  </button>
                 </div>
               </div>
             </div>
