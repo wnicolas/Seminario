@@ -1,0 +1,22 @@
+.cover {
+    width: 100vw;
+    height: 100vh;
+    text-align: justify;
+}
+.img-pelicula-catalogo {
+    height: 300px;
+}
+.catalogo {
+    margin: 10vh auto;
+    font-size: 1.3rem;
+}
+
+.catalogo .descripcion {
+    margin: 20px;
+}
+.catalogo .horario {
+    margin: 20px;
+}
+.catalogo .valor_boleta {
+    margin: 20px;
+}

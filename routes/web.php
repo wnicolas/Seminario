@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('app');
     return csrf_token();
 });
 
@@ -30,7 +30,7 @@ Route::resource('compra', CompraController::class);
 Route::resource('proyeccion', Proyeccion::class);
 
 Route::get('ver-funciones', function () {
-    $funciones = DB::select('SELECT * FROM cine_distrito.proyeccion proy JOIN cine_distrito.pelicula peli ON proy.K_PELICULA=peli.K_PELICULA');
+    $funciones = DB::select('SELECT * FROM cine_distrito.proyeccion proy JOIN cine_distrito.pelicula peli ON proy.K_PELICULA=peli.K_PELICULA ORDER BY proy.F_PROYECCION ASC');
 
     $asientos = DB::select('SELECT * FROM cine_distrito.proyeccion_asiento');
     return response()->json(
