@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    return view('home');
     return csrf_token();
-    return view('welcome');
 });
 
 Route::resource('multiplex', MultiplexController::class);
