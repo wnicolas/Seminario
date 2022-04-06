@@ -41,10 +41,11 @@
                   Disponible
                 </div>
                 <div class="col d-flex justify-content-center">
-                  <button class="btn btn-primary">Silla</button> Reservado
+                  <button class="btn btn-primary" disabled>Silla</button>
+                  Reservado
                 </div>
                 <div class="col d-flex justify-content-center">
-                  <button class="btn btn-danger">Silla</button> Ocupado
+                  <button class="btn btn-danger" disabled>Silla</button> Ocupado
                 </div>
               </div>
 
@@ -56,6 +57,7 @@
                   :key="silla.K_ASIENTO"
                 >
                   <button
+                    :disabled="silla.ESTADO == 'D' ? false : true"
                     :class="[
                       silla.ESTADO == 'D'
                         ? 'btn my-2 btn-outline-success'

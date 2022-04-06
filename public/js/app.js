@@ -5590,6 +5590,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -28631,6 +28633,9 @@ var render = function () {
                                   ? "btn my-2 btn-primary"
                                   : "btn my-2 btn-danger",
                               ],
+                              attrs: {
+                                disabled: silla.ESTADO == "D" ? false : true,
+                              },
                             },
                             [
                               _vm._v(
@@ -28668,12 +28673,20 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col d-flex justify-content-center" }, [
-        _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Silla")]),
-        _vm._v(" Reservado\n              "),
+        _c(
+          "button",
+          { staticClass: "btn btn-primary", attrs: { disabled: "" } },
+          [_vm._v("Silla")]
+        ),
+        _vm._v("\n                Reservado\n              "),
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col d-flex justify-content-center" }, [
-        _c("button", { staticClass: "btn btn-danger" }, [_vm._v("Silla")]),
+        _c(
+          "button",
+          { staticClass: "btn btn-danger", attrs: { disabled: "" } },
+          [_vm._v("Silla")]
+        ),
         _vm._v(" Ocupado\n              "),
       ]),
     ])
