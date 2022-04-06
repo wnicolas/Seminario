@@ -40,3 +40,13 @@ Route::get('ver-funciones', function () {
         ]
     );
 });
+
+Route::get('ver-snacks', function () {
+    $snacks = DB::select('SELECT * FROM cine_distrito.snack WHERE Q_SNACK>0');
+
+    return response()->json(
+        [
+            'snacks' => $snacks,
+        ]
+    );
+});

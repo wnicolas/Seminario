@@ -93,39 +93,101 @@
               </div>
             </div>
             <div v-if="usuario_valido" class="container">
-              <div class="row">
-                <div class="col d-flex justify-content-center">
-                  <button class="btn btn-outline-success">Silla</button>
-                  Disponible
-                </div>
-                <div class="col d-flex justify-content-center">
-                  <button class="btn btn-primary" disabled>Silla</button>
-                  Reservado
-                </div>
-                <div class="col d-flex justify-content-center">
-                  <button class="btn btn-danger" disabled>Silla</button> Ocupado
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col d-flex justify-content-center">
+                      <button class="btn btn-outline-success">Silla</button>
+                      Disponible
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                      <button class="btn btn-primary" disabled>Silla</button>
+                      Reservado
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                      <button class="btn btn-danger" disabled>Silla</button>
+                      Ocupado
+                    </div>
+                  </div>
+
+                  <div class="pantalla my-3">Pantalla</div>
+                  <div class="row justify-content-center">
+                    <div
+                      class="col col-4 d-flex justify-content-center"
+                      v-for="silla in sillas"
+                      :key="silla.K_ASIENTO"
+                    >
+                      <button
+                        :disabled="silla.ESTADO == 'D' ? false : true"
+                        :class="[
+                          silla.ESTADO == 'D'
+                            ? 'btn my-2 btn-outline-success'
+                            : silla.ESTADO == 'R'
+                            ? 'btn my-2 btn-primary'
+                            : 'btn my-2 btn-danger',
+                        ]"
+                        @click="agregarCarritoSilla(silla)"
+                      >
+                        Silla {{ silla.K_ASIENTO }}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div class="pantalla my-3">Pantalla</div>
-              <div class="row justify-content-center">
-                <div
-                  class="col col-4 d-flex justify-content-center"
-                  v-for="silla in sillas"
-                  :key="silla.K_ASIENTO"
-                >
-                  <button
-                    :disabled="silla.ESTADO == 'D' ? false : true"
-                    :class="[
-                      silla.ESTADO == 'D'
-                        ? 'btn my-2 btn-outline-success'
-                        : silla.ESTADO == 'R'
-                        ? 'btn my-2 btn-primary'
-                        : 'btn my-2 btn-danger',
-                    ]"
-                  >
-                    Silla
+              <div class="row my-2">
+                <div class="col">
+                  <button class="btn btn-info" @click="comprarSnacks()">
+                    Siguiente
                   </button>
+                </div>
+              </div>
+            </div>
+            <div class="container" v-if="comprar_snacks">
+              <div class="container">
+                <div class="row">
+                  <div
+                    class="col col-6 d-flex justify-content-center"
+                    v-for="combo in combos"
+                    :key="combo.K_SNACK"
+                  >
+                    <div class="card my-2">
+                      <div class="card-content">
+                        <div class="card-header">
+                          <b> {{ combo.N_SNACK }}</b>
+                        </div>
+                        <div class="card-body">
+                          <div class="d-flex justify-content-center">
+                            <img
+                              :src="combo.I_SNACK"
+                              alt="Imagen de combo"
+                              class="img-fluid imagen-combo"
+                            />
+                          </div>
+                          <p>{{ combo.DESC_SNACK }}</p>
+                          <p>
+                            Precio <b>USD{{ combo.P_SNACK }}</b>
+                          </p>
+                        </div>
+                        <div class="card-footer">
+                          <div class="form-group">
+                            <input
+                              type="number"
+                              class="form-control"
+                              placeholder="Cantidad"
+                              v-model="combo.cantidad_comprada"
+                            />
+                            <button
+                              class="form-control btn btn-success"
+                              @click="agregarSnackAlCarrito(combo)"
+                            >
+                              Agregar al carrito
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -152,19 +214,28 @@ export default {
     return {
       sillas: [],
       usuario: {
-        K_CLIENTE: "",
+        K_CLIENTE: "12345",
         A1_CLIENTE: "",
         N1_CLIENTE: "",
         E_CLIENTE: "",
       },
       usuario_valido: false,
       crear_nuevo_usuario: false,
+      comprar_snacks: false,
+
+      carrito: {
+        sillas: [],
+        snacks: [],
+      },
+
+      combos: [],
     };
   },
   props: {
     funcion: Object,
     asientos: [],
     clientes: [],
+    snacks: [],
   },
   mounted() {
     this.filtrarAsientos();
@@ -204,6 +275,19 @@ export default {
           console.log(response.data.respuesta);
         }
       });
+    },
+    agregarCarritoSilla(silla) {
+      silla.ESTADO = "R";
+      this.carrito.sillas.push(silla);
+      alert("Asiento " + silla.K_ASIENTO + " agregado al carrito");
+    },
+    comprarSnacks() {
+      this.comprar_snacks = true;
+      this.combos = this.snacks;
+    },
+    agregarSnackAlCarrito(combo) {
+      alert("Snacks añadadidos al carrito");
+      this.carrito.snacks.push(combo);
     },
   },
 };

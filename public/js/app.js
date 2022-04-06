@@ -5425,6 +5425,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5434,12 +5435,14 @@ __webpack_require__.r(__webpack_exports__);
       //Data
       funciones: [],
       asientos: [],
-      clientes: []
+      clientes: [],
+      snacks: []
     };
   },
   mounted: function mounted() {
     this.getFunciones();
     this.getClientes();
+    this.getSnacks();
   },
   methods: {
     getFunciones: function getFunciones() {
@@ -5455,6 +5458,13 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("cliente").then(function (response) {
         _this2.clientes = response.data;
+      });
+    },
+    getSnacks: function getSnacks() {
+      var _this3 = this;
+
+      axios.get("ver-snacks").then(function (response) {
+        _this3.snacks = response.data.snacks;
       });
     },
     comenzarCompra: function comenzarCompra() {
@@ -5660,24 +5670,93 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       sillas: [],
       usuario: {
-        K_CLIENTE: "",
+        K_CLIENTE: "12345",
         A1_CLIENTE: "",
         N1_CLIENTE: "",
         E_CLIENTE: ""
       },
       usuario_valido: false,
-      crear_nuevo_usuario: false
+      crear_nuevo_usuario: false,
+      comprar_snacks: false,
+      carrito: {
+        sillas: [],
+        snacks: []
+      },
+      combos: []
     };
   },
   props: {
     funcion: Object,
     asientos: [],
-    clientes: []
+    clientes: [],
+    snacks: []
   },
   mounted: function mounted() {
     this.filtrarAsientos();
@@ -5724,6 +5803,19 @@ __webpack_require__.r(__webpack_exports__);
           console.log(response.data.respuesta);
         }
       });
+    },
+    agregarCarritoSilla: function agregarCarritoSilla(silla) {
+      silla.ESTADO = "R";
+      this.carrito.sillas.push(silla);
+      alert("Asiento " + silla.K_ASIENTO + " agregado al carrito");
+    },
+    comprarSnacks: function comprarSnacks() {
+      this.comprar_snacks = true;
+      this.combos = this.snacks;
+    },
+    agregarSnackAlCarrito: function agregarSnackAlCarrito(combo) {
+      alert("Snacks añadadidos al carrito");
+      this.carrito.snacks.push(combo);
     }
   }
 });
@@ -28575,6 +28667,7 @@ var render = function () {
                             funcion: funcion,
                             asientos: _vm.asientos,
                             clientes: _vm.clientes,
+                            snacks: _vm.snacks,
                           },
                         }),
                       ],
@@ -28911,50 +29004,204 @@ var render = function () {
                 _vm._v(" "),
                 _vm.usuario_valido
                   ? _c("div", { staticClass: "container" }, [
-                      _vm._m(0),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "pantalla my-3" }, [
-                        _vm._v("Pantalla"),
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "row justify-content-center" },
-                        _vm._l(_vm.sillas, function (silla) {
-                          return _c(
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-body" }, [
+                          _vm._m(0),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "pantalla my-3" }, [
+                            _vm._v("Pantalla"),
+                          ]),
+                          _vm._v(" "),
+                          _c(
                             "div",
-                            {
-                              key: silla.K_ASIENTO,
-                              staticClass:
-                                "col col-4 d-flex justify-content-center",
-                            },
-                            [
-                              _c(
-                                "button",
+                            { staticClass: "row justify-content-center" },
+                            _vm._l(_vm.sillas, function (silla) {
+                              return _c(
+                                "div",
                                 {
-                                  class: [
-                                    silla.ESTADO == "D"
-                                      ? "btn my-2 btn-outline-success"
-                                      : silla.ESTADO == "R"
-                                      ? "btn my-2 btn-primary"
-                                      : "btn my-2 btn-danger",
-                                  ],
-                                  attrs: {
-                                    disabled:
-                                      silla.ESTADO == "D" ? false : true,
-                                  },
+                                  key: silla.K_ASIENTO,
+                                  staticClass:
+                                    "col col-4 d-flex justify-content-center",
                                 },
                                 [
-                                  _vm._v(
-                                    "\n                  Silla\n                "
+                                  _c(
+                                    "button",
+                                    {
+                                      class: [
+                                        silla.ESTADO == "D"
+                                          ? "btn my-2 btn-outline-success"
+                                          : silla.ESTADO == "R"
+                                          ? "btn my-2 btn-primary"
+                                          : "btn my-2 btn-danger",
+                                      ],
+                                      attrs: {
+                                        disabled:
+                                          silla.ESTADO == "D" ? false : true,
+                                      },
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.agregarCarritoSilla(silla)
+                                        },
+                                      },
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                      Silla " +
+                                          _vm._s(silla.K_ASIENTO) +
+                                          "\n                    "
+                                      ),
+                                    ]
                                   ),
                                 ]
+                              )
+                            }),
+                            0
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row my-2" }, [
+                        _c("div", { staticClass: "col" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-info",
+                              on: {
+                                click: function ($event) {
+                                  return _vm.comprarSnacks()
+                                },
+                              },
+                            },
+                            [
+                              _vm._v(
+                                "\n                  Siguiente\n                "
                               ),
                             ]
-                          )
-                        }),
-                        0
-                      ),
+                          ),
+                        ]),
+                      ]),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.comprar_snacks
+                  ? _c("div", { staticClass: "container" }, [
+                      _c("div", { staticClass: "container" }, [
+                        _c(
+                          "div",
+                          { staticClass: "row" },
+                          _vm._l(_vm.combos, function (combo) {
+                            return _c(
+                              "div",
+                              {
+                                key: combo.K_SNACK,
+                                staticClass:
+                                  "col col-6 d-flex justify-content-center",
+                              },
+                              [
+                                _c("div", { staticClass: "card my-2" }, [
+                                  _c("div", { staticClass: "card-content" }, [
+                                    _c("div", { staticClass: "card-header" }, [
+                                      _c("b", [
+                                        _vm._v(" " + _vm._s(combo.N_SNACK)),
+                                      ]),
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "card-body" }, [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "d-flex justify-content-center",
+                                        },
+                                        [
+                                          _c("img", {
+                                            staticClass:
+                                              "img-fluid imagen-combo",
+                                            attrs: {
+                                              src: combo.I_SNACK,
+                                              alt: "Imagen de combo",
+                                            },
+                                          }),
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _vm._v(_vm._s(combo.DESC_SNACK)),
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("p", [
+                                        _vm._v(
+                                          "\n                          Precio "
+                                        ),
+                                        _c("b", [
+                                          _vm._v("USD" + _vm._s(combo.P_SNACK)),
+                                        ]),
+                                      ]),
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "card-footer" }, [
+                                      _c("div", { staticClass: "form-group" }, [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: combo.cantidad_comprada,
+                                              expression:
+                                                "combo.cantidad_comprada",
+                                            },
+                                          ],
+                                          staticClass: "form-control",
+                                          attrs: {
+                                            type: "number",
+                                            placeholder: "Cantidad",
+                                          },
+                                          domProps: {
+                                            value: combo.cantidad_comprada,
+                                          },
+                                          on: {
+                                            input: function ($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                combo,
+                                                "cantidad_comprada",
+                                                $event.target.value
+                                              )
+                                            },
+                                          },
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "form-control btn btn-success",
+                                            on: {
+                                              click: function ($event) {
+                                                return _vm.agregarSnackAlCarrito(
+                                                  combo
+                                                )
+                                              },
+                                            },
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                            Agregar al carrito\n                          "
+                                            ),
+                                          ]
+                                        ),
+                                      ]),
+                                    ]),
+                                  ]),
+                                ]),
+                              ]
+                            )
+                          }),
+                          0
+                        ),
+                      ]),
                     ])
                   : _vm._e(),
               ]),
@@ -28977,7 +29224,7 @@ var staticRenderFns = [
         _c("button", { staticClass: "btn btn-outline-success" }, [
           _vm._v("Silla"),
         ]),
-        _vm._v("\n                Disponible\n              "),
+        _vm._v("\n                    Disponible\n                  "),
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col d-flex justify-content-center" }, [
@@ -28986,7 +29233,7 @@ var staticRenderFns = [
           { staticClass: "btn btn-primary", attrs: { disabled: "" } },
           [_vm._v("Silla")]
         ),
-        _vm._v("\n                Reservado\n              "),
+        _vm._v("\n                    Reservado\n                  "),
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col d-flex justify-content-center" }, [
@@ -28995,7 +29242,7 @@ var staticRenderFns = [
           { staticClass: "btn btn-danger", attrs: { disabled: "" } },
           [_vm._v("Silla")]
         ),
-        _vm._v(" Ocupado\n              "),
+        _vm._v("\n                    Ocupado\n                  "),
       ]),
     ])
   },

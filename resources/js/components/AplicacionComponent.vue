@@ -45,6 +45,7 @@
                   :funcion="funcion"
                   :asientos="asientos"
                   :clientes="clientes"
+                  :snacks="snacks"
                 ></modal-compra-boletas>
               </div>
             </div>
@@ -66,11 +67,13 @@ export default {
       funciones: [],
       asientos: [],
       clientes: [],
+      snacks: [],
     };
   },
   mounted() {
     this.getFunciones();
     this.getClientes();
+    this.getSnacks();
   },
   methods: {
     getFunciones() {
@@ -82,6 +85,11 @@ export default {
     getClientes() {
       axios.get("cliente").then((response) => {
         this.clientes = response.data;
+      });
+    },
+    getSnacks() {
+      axios.get("ver-snacks").then((response) => {
+        this.snacks = response.data.snacks;
       });
     },
     comenzarCompra() {
