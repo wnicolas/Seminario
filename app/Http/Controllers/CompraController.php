@@ -37,27 +37,36 @@ class CompraController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            DB::transaction(function () use ($request) {
+        $asientos = json_decode($request->asientos);
+        $snacks = json_decode($request->snacks);
+        $usuario = json_decode($request->usuario);
 
-                $asientosComprados = json_decode($request->asientos_comprados);
+        try {
+            DB::transaction(function () use ($request, $asientos, $snacks, $usuario) {
 
                 $compra = Compra::create(
                     [
-                        "K_COMPRA" => $request->K_COMPRA,
-                        "K_CLIENTE" => $request->K_CLIENTE,
-                        "F_COMPRA" => $request->F_COMPRA,
+                        "K_COMPRA" => mt_rand(0, 10000000000),
+                        "K_CLIENTE" => $usuario->K_CLIENTE,
+                        // "F_COMPRA" => $request->F_COMPRA,
                         //TODO: IMPLEMENTAR VALOR DE LA COMPRA
                         "V_COMPRA" => 0,
-                        "ESTADO" => $request->ESTADO,
+                        "ESTADO" => 'ACEPTADO',
 
                     ]
                 );
 
-                foreach ($asientosComprados as $value) {
-                    DB::update("UPDATE cine_distrito.proyeccion_asiento SET ESTADO='O' WHERE cine_distrito.K_MULTIPLEX=?,cine_distrito.K_ASIENTO=?,cine_distrito.K_SALA=?, cine_distrito.K_PROYECCION=?", [$value->K_MULTIPLEX, $value->K_ASIENTO, $value->K_SALA, $value->K_PROYECCION]);
-                    
-                    DB::insert('INSERT INTO cine_distrito.compra_asiento VALUES(?,?,?,?,?)', [$value->K_MULTIPLEX, $value->K_ASIENTO, $value->K_SALA, $value->K_PROYECCION, $value->K_COMPRA]);
+                foreach ($asientos as $value) {
+                    DB::update("UPDATE cine_distrito.proyeccion_asiento SET ESTADO='O' WHERE cine_distrito.proyeccion_asiento.K_MULTIPLEX=? AND cine_distrito.proyeccion_asiento.K_ASIENTO=? AND cine_distrito.proyeccion_asiento.K_SALA=? AND cine_distrito.proyeccion_asiento.K_PROYECCION=?", [$value->K_MULTIPLEX, $value->K_ASIENTO, $value->K_SALA, $value->K_PROYECCION]);
+
+                    DB::insert('INSERT INTO cine_distrito.compra_asiento VALUES(?,?,?,?,?)', [$value->K_MULTIPLEX, $value->K_ASIENTO, $value->K_SALA, $value->K_PROYECCION, $compra->K_COMPRA]);
+                }
+
+                foreach ($snacks as $value) {
+                    DB::update("UPDATE cine_distrito.snack SET Q_SNACK=Q_SNACK-? WHERE cine_distrito.snack.K_SNACK=?", [$value->cantidad_comprada, $value->K_SNACK]);
+
+                    DB::insert('INSERT INTO cine_distrito.compra_snack VALUES(?,?,?,?)', [$value->K_SNACK, $compra->K_COMPRA, $value->cantidad_comprada, 0]);
+                    //TODO Hacer el valor del subtotal de la compra
                 }
             }, 5);
         } catch (\Throwable $th) {

@@ -5430,8 +5430,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       //Banderas de vistas
-      vista_home: false,
-      vista_seleccionar_funcion: true,
+      vista_home: true,
+      vista_seleccionar_funcion: false,
       //Data
       funciones: [],
       asientos: [],
@@ -5732,12 +5732,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       sillas: [],
       usuario: {
-        K_CLIENTE: "12345",
+        K_CLIENTE: "",
         A1_CLIENTE: "",
         N1_CLIENTE: "",
         E_CLIENTE: ""
@@ -5816,6 +5822,23 @@ __webpack_require__.r(__webpack_exports__);
     agregarSnackAlCarrito: function agregarSnackAlCarrito(combo) {
       alert("Snacks añadadidos al carrito");
       this.carrito.snacks.push(combo);
+    },
+    realizarCompra: function realizarCompra() {
+      var asientos = JSON.stringify(this.carrito.sillas);
+      var snacks = JSON.stringify(this.carrito.snacks);
+      var usuario = JSON.stringify(this.usuario);
+      var formData = new FormData();
+      formData.append("asientos", asientos);
+      formData.append("snacks", snacks);
+      formData.append("usuario", usuario);
+      axios.post("compra", formData).then(function (response) {
+        if (response.data.respuesta == "exitoso") {
+          alert("Compra realizada con éxito");
+          window.location.reload();
+        } else {
+          alert("Algo salió mal");
+        }
+      });
     }
   }
 });
@@ -29206,7 +29229,30 @@ var render = function () {
                   : _vm._e(),
               ]),
               _vm._v(" "),
-              _vm._m(1),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-bs-dismiss": "modal" },
+                  },
+                  [_vm._v("\n            Close\n          ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function ($event) {
+                        return _vm.realizarCompra()
+                      },
+                    },
+                  },
+                  [_vm._v("\n            Realizar Compra\n          ")]
+                ),
+              ]),
             ]),
           ]
         ),
@@ -29244,27 +29290,6 @@ var staticRenderFns = [
         ),
         _vm._v("\n                    Ocupado\n                  "),
       ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-bs-dismiss": "modal" },
-        },
-        [_vm._v("\n            Close\n          ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "button" } },
-        [_vm._v("Save changes")]
-      ),
     ])
   },
 ]

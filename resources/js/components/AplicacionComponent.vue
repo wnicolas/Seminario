@@ -61,8 +61,8 @@ export default {
   data() {
     return {
       //Banderas de vistas
-      vista_home: false,
-      vista_seleccionar_funcion: true,
+      vista_home: true,
+      vista_seleccionar_funcion: false,
       //Data
       funciones: [],
       asientos: [],

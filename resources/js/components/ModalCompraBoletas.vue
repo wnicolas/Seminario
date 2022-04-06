@@ -200,7 +200,13 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="realizarCompra()"
+            >
+              Realizar Compra
+            </button>
           </div>
         </div>
       </div>
@@ -214,7 +220,7 @@ export default {
     return {
       sillas: [],
       usuario: {
-        K_CLIENTE: "12345",
+        K_CLIENTE: "",
         A1_CLIENTE: "",
         N1_CLIENTE: "",
         E_CLIENTE: "",
@@ -288,6 +294,25 @@ export default {
     agregarSnackAlCarrito(combo) {
       alert("Snacks añadadidos al carrito");
       this.carrito.snacks.push(combo);
+    },
+    realizarCompra() {
+      var asientos = JSON.stringify(this.carrito.sillas);
+      var snacks = JSON.stringify(this.carrito.snacks);
+      var usuario = JSON.stringify(this.usuario);
+
+      var formData = new FormData();
+      formData.append("asientos", asientos);
+      formData.append("snacks", snacks);
+      formData.append("usuario", usuario);
+
+      axios.post("compra", formData).then((response) => {
+        if (response.data.respuesta == "exitoso") {
+          alert("Compra realizada con éxito");
+          window.location.reload();
+        } else {
+          alert("Algo salió mal");
+        }
+      });
     },
   },
 };
