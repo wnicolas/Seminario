@@ -33,7 +33,20 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">...</div>
+          <div class="modal-body">
+            <div class="container">
+              <div class="pantalla">Pantalla</div>
+              <div class="row justify-content-center">
+                <div
+                  class="col col-4 d-flex justify-content-center"
+                  v-for="silla in sillas"
+                  :key="silla.K_ASIENTO"
+                >
+                  <button class="btn">Silla</button>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="modal-footer">
             <button
               type="button"

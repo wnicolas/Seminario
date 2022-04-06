@@ -5554,6 +5554,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -28565,7 +28578,32 @@ var render = function () {
                 }),
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [_vm._v("...")]),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "container" }, [
+                  _c("div", { staticClass: "pantalla" }, [_vm._v("Pantalla")]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "row justify-content-center" },
+                    _vm._l(_vm.sillas, function (silla) {
+                      return _c(
+                        "div",
+                        {
+                          key: silla.K_ASIENTO,
+                          staticClass:
+                            "col col-4 d-flex justify-content-center",
+                        },
+                        [
+                          _c("button", { staticClass: "btn" }, [
+                            _vm._v("Silla"),
+                          ]),
+                        ]
+                      )
+                    }),
+                    0
+                  ),
+                ]),
+              ]),
               _vm._v(" "),
               _vm._m(0),
             ]),
