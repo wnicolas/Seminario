@@ -44,6 +44,7 @@
                 <modal-compra-boletas
                   :funcion="funcion"
                   :asientos="asientos"
+                  :clientes="clientes"
                 ></modal-compra-boletas>
               </div>
             </div>
@@ -64,16 +65,23 @@ export default {
       //Data
       funciones: [],
       asientos: [],
+      clientes: [],
     };
   },
   mounted() {
     this.getFunciones();
+    this.getClientes();
   },
   methods: {
     getFunciones() {
       axios.get("ver-funciones").then((response) => {
         this.funciones = response.data.funciones;
         this.asientos = response.data.asientos;
+      });
+    },
+    getClientes() {
+      axios.get("cliente").then((response) => {
+        this.clientes = response.data;
       });
     },
     comenzarCompra() {

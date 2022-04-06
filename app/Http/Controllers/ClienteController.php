@@ -50,7 +50,7 @@ class ClienteController extends Controller
                 );
             }, 5);
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            return response()->json(['respuesta' => $th->getMessage()]);
         }
 
         return response()->json([

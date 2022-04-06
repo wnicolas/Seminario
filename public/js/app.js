@@ -5424,6 +5424,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5432,11 +5433,13 @@ __webpack_require__.r(__webpack_exports__);
       vista_seleccionar_funcion: true,
       //Data
       funciones: [],
-      asientos: []
+      asientos: [],
+      clientes: []
     };
   },
   mounted: function mounted() {
     this.getFunciones();
+    this.getClientes();
   },
   methods: {
     getFunciones: function getFunciones() {
@@ -5445,6 +5448,13 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("ver-funciones").then(function (response) {
         _this.funciones = response.data.funciones;
         _this.asientos = response.data.asientos;
+      });
+    },
+    getClientes: function getClientes() {
+      var _this2 = this;
+
+      axios.get("cliente").then(function (response) {
+        _this2.clientes = response.data;
       });
     },
     comenzarCompra: function comenzarCompra() {
@@ -5592,15 +5602,82 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      sillas: []
+      sillas: [],
+      usuario: {
+        K_CLIENTE: "",
+        A1_CLIENTE: "",
+        N1_CLIENTE: "",
+        E_CLIENTE: ""
+      },
+      usuario_valido: false,
+      crear_nuevo_usuario: false
     };
   },
   props: {
     funcion: Object,
-    asientos: []
+    asientos: [],
+    clientes: []
   },
   mounted: function mounted() {
     this.filtrarAsientos();
@@ -5611,6 +5688,41 @@ __webpack_require__.r(__webpack_exports__);
 
       this.sillas = this.asientos.filter(function (asiento) {
         return asiento.K_PROYECCION === _this.funcion.K_PROYECCION;
+      });
+    },
+    validarUsuario: function validarUsuario() {
+      var _this2 = this;
+
+      var usuario = this.clientes.find(function (cliente) {
+        return cliente.K_CLIENTE == _this2.usuario.K_CLIENTE;
+      });
+
+      if (usuario) {
+        this.usuario = usuario;
+        this.usuario_valido = true;
+        this.crear_nuevo_usuario = false;
+      } else {
+        this.crear_nuevo_usuario = true;
+      }
+    },
+    guardarUsuario: function guardarUsuario() {
+      var _this3 = this;
+
+      var formData = new FormData();
+
+      for (var key in this.usuario) {
+        formData.append(key, this.usuario[key]);
+      }
+
+      axios.post("cliente", formData).then(function (response) {
+        if (response.data.respuesta == "exitoso") {
+          alert("Usuario creado satisfactoriamente.");
+          _this3.usuario_valido = true;
+          _this3.crear_nuevo_usuario = false;
+        } else {
+          alert("No se pudo crear el usuario.");
+          console.log(response.data.respuesta);
+        }
       });
     }
   }
@@ -28459,7 +28571,11 @@ var render = function () {
                       { staticClass: "card-footer" },
                       [
                         _c("modal-compra-boletas", {
-                          attrs: { funcion: funcion, asientos: _vm.asientos },
+                          attrs: {
+                            funcion: funcion,
+                            asientos: _vm.asientos,
+                            clientes: _vm.clientes,
+                          },
                         }),
                       ],
                       1
@@ -28604,51 +28720,243 @@ var render = function () {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "container" }, [
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "pantalla my-3" }, [
-                    _vm._v("Pantalla"),
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "row justify-content-center" },
-                    _vm._l(_vm.sillas, function (silla) {
-                      return _c(
-                        "div",
-                        {
-                          key: silla.K_ASIENTO,
-                          staticClass:
-                            "col col-4 d-flex justify-content-center",
-                        },
-                        [
+                !_vm.usuario_valido
+                  ? _c("div", { staticClass: "container" }, [
+                      _c("div", { staticClass: "row my-3" }, [
+                        _c(
+                          "div",
+                          { staticClass: "col d-flex justify-content-center" },
+                          [
+                            _c("label", [
+                              _vm._v(
+                                "\n                  Ingresa tu ID:\n                  "
+                              ),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.usuario.K_CLIENTE,
+                                    expression: "usuario.K_CLIENTE",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                attrs: {
+                                  type: "text",
+                                  placeholder: "ID de usuario",
+                                },
+                                domProps: { value: _vm.usuario.K_CLIENTE },
+                                on: {
+                                  input: function ($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.usuario,
+                                      "K_CLIENTE",
+                                      $event.target.value
+                                    )
+                                  },
+                                },
+                              }),
+                            ]),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "col d-flex align-items-end justify-content-center",
+                          },
+                          [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-warning",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.validarUsuario()
+                                  },
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                  Siguiente\n                "
+                                ),
+                              ]
+                            ),
+                          ]
+                        ),
+                      ]),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.crear_nuevo_usuario
+                  ? _c("div", [
+                      _c("div", { staticClass: "alert alert-warning my-2" }, [
+                        _vm._v(
+                          "\n              El usuario no existe, debes crear uno antes de continuar.\n            "
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.usuario.N1_CLIENTE,
+                                expression: "usuario.N1_CLIENTE",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", placeholder: "Nombre(s)" },
+                            domProps: { value: _vm.usuario.N1_CLIENTE },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.usuario,
+                                  "N1_CLIENTE",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.usuario.A1_CLIENTE,
+                                expression: "usuario.A1_CLIENTE",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", placeholder: "Apellido(s)" },
+                            domProps: { value: _vm.usuario.A1_CLIENTE },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.usuario,
+                                  "A1_CLIENTE",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.usuario.E_CLIENTE,
+                                expression: "usuario.E_CLIENTE",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", placeholder: "Email" },
+                            domProps: { value: _vm.usuario.E_CLIENTE },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.usuario,
+                                  "E_CLIENTE",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row my-2" }, [
+                        _c("div", { staticClass: "col" }, [
                           _c(
                             "button",
                             {
-                              class: [
-                                silla.ESTADO == "D"
-                                  ? "btn my-2 btn-outline-success"
-                                  : silla.ESTADO == "R"
-                                  ? "btn my-2 btn-primary"
-                                  : "btn my-2 btn-danger",
-                              ],
-                              attrs: {
-                                disabled: silla.ESTADO == "D" ? false : true,
+                              staticClass: "btn btn-success",
+                              on: {
+                                click: function ($event) {
+                                  return _vm.guardarUsuario()
+                                },
                               },
                             },
                             [
                               _vm._v(
-                                "\n                  Silla\n                "
+                                "\n                  Guardar\n                "
                               ),
                             ]
                           ),
-                        ]
-                      )
-                    }),
-                    0
-                  ),
-                ]),
+                        ]),
+                      ]),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.usuario_valido
+                  ? _c("div", { staticClass: "container" }, [
+                      _vm._m(0),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "pantalla my-3" }, [
+                        _vm._v("Pantalla"),
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "row justify-content-center" },
+                        _vm._l(_vm.sillas, function (silla) {
+                          return _c(
+                            "div",
+                            {
+                              key: silla.K_ASIENTO,
+                              staticClass:
+                                "col col-4 d-flex justify-content-center",
+                            },
+                            [
+                              _c(
+                                "button",
+                                {
+                                  class: [
+                                    silla.ESTADO == "D"
+                                      ? "btn my-2 btn-outline-success"
+                                      : silla.ESTADO == "R"
+                                      ? "btn my-2 btn-primary"
+                                      : "btn my-2 btn-danger",
+                                  ],
+                                  attrs: {
+                                    disabled:
+                                      silla.ESTADO == "D" ? false : true,
+                                  },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                  Silla\n                "
+                                  ),
+                                ]
+                              ),
+                            ]
+                          )
+                        }),
+                        0
+                      ),
+                    ])
+                  : _vm._e(),
               ]),
               _vm._v(" "),
               _vm._m(1),
