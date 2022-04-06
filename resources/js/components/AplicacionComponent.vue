@@ -13,10 +13,14 @@
         <div v-for="funcion in funciones" :key="funcion.K_PROYECCION">
           <div class="card my-5 mx-5">
             <div class="card-content">
-              <div class="card-header">{{ funcion.N_PELICULA }}</div>
+              <div class="card-header">
+                <b> {{ funcion.N_PELICULA }}</b>
+              </div>
               <div class="card-body">
                 <div class="row">
-                  <div class="col col-12 col-md-3 d-flex justify-content-center">
+                  <div
+                    class="col col-12 col-md-3 d-flex justify-content-center"
+                  >
                     <img
                       :src="funcion.I_PELICULA"
                       alt="Imágen de película"
@@ -37,7 +41,10 @@
                 </div>
               </div>
               <div class="card-footer">
-                <button class="btn btn-success">¡Compra ahora!</button>
+                <modal-compra-boletas
+                  :funcion="funcion"
+                  :asientos="asientos"
+                ></modal-compra-boletas>
               </div>
             </div>
           </div>

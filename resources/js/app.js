@@ -24,7 +24,15 @@ Vue.component(
     require("./components/ExampleComponent.vue").default
 );
 
-Vue.component("aplicacion-component", require("./components/AplicacionComponent.vue").default);
+Vue.component(
+    "aplicacion-component",
+    require("./components/AplicacionComponent.vue").default
+);
+
+Vue.component(
+    "modal-compra-boletas",
+    require("./components/ModalCompraBoletas.vue").default
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
